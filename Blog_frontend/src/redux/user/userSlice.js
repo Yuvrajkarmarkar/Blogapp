@@ -1,10 +1,10 @@
-import { createSLice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { FaSleigh } from 'react-icons/fa';
 
 const initialState = {
     currentUser: null,
     error: null,
-    loading:False
+    loading:false
 }
 
 const userSlice = createSlice({

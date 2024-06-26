@@ -1,9 +1,10 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
-import { BrowserRouter, Router, Route } from 'react-router-dom';
+
 import { Link,useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { signInStart,signInFailure,signInSuccess } from '../redux/user/userSlice';
 import { useDispatch,useSelector } from 'react-redux';
+import Oauth from '../components/Oauth';
 
 
 
@@ -88,6 +89,7 @@ export default function Signinpage() {
               ) : 'sign in'
             }
             </Button>
+            <Oauth/>
           </form>
           <div className=" flex gap-2 text-sm mt-5">
             <span>
