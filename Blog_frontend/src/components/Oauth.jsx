@@ -11,7 +11,8 @@ export default function Oauth() {
     const auth = getAuth(app)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const handleGoogleClick =async () => {
+    const handleGoogleClick = async () => {
+        // console.log(import.meta.env.VITE_FIREBASE_API_KEY)
         const provider = new GoogleAuthProvider()
         provider.setCustomParameters({ prompt: 'select_account' })
         try {

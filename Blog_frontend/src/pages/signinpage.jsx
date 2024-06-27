@@ -58,7 +58,7 @@ export default function Signinpage() {
         {/* left */}
         <div className='flex-1'>
           <Link to="/" className=' font-bold dark:text-white text-4xl'>
-                  <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white '>Yuvraj's</span>
+                  <span className='px-2 py-1 bg-gradient-to-r from-green-500  to-blue-500 rounded-lg text-white '>Yuvraj's</span>
                   Blog
           </Link>
           <p className='text-sm mt-5 '> 
@@ -79,7 +79,7 @@ export default function Signinpage() {
               <TextInput type='password' placeholder='**************' id='password'onChange={handleChange} />
 
             </div>
-            <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
+            <Button gradientDuoTone='greenToBlue' type='submit' disabled={loading}>
               {
                 loading ? (
             <>
