@@ -12,18 +12,19 @@ export default function Oauth() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleGoogleClick = async () => {
-        // console.log(import.meta.env.VITE_FIREBASE_API_KEY)
+       
         const provider = new GoogleAuthProvider()
         provider.setCustomParameters({ prompt: 'select_account' })
         try {
-            const resultFromGoogle = await signInWithPopup(auth,provider)
+            const resultsFromGoogle = await signInWithPopup(auth, provider)
+            console.log(resultsFromGoogle);
             const res = await fetch('/api/auth/google', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: resultFromGoogle.user.displayName,
-                    email: resultFromGoogle.user.email,
-                    photo: resultFromGoogle.user.photoURL,
+                    name: resultsFromGoogle.user.displayName,
+                    email: resultsFromGoogle.user.email,
+                    googlePhotoUrl: resultsFromGoogle.user.photoURL,
                     
                 }),
             })
@@ -40,7 +41,7 @@ export default function Oauth() {
 
   return (
       <Button type='button' gradientDuoTone='greenToBlue' outline onClick={handleGoogleClick}>
-          <AiFillGoogleCircle className='w-6 h-6' />
+          <AiFillGoogleCircle className='w-6 h-6 mr-2' />
           Continue with google
    </Button>
   )
