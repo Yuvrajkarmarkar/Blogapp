@@ -39,7 +39,19 @@ export default function header() {
                           }>
                               <Dropdown.Header>
                                   <span className='block text-sm'>@{currentUser.username}</span>
+                                  <span className='block text-sm front-medium truncate'>@{currentUser.email}</span>
                               </Dropdown.Header>
+                              <Link to={'/Dashboard/tab=profile'}>
+                                  <Dropdown.Item>
+                                      Profile
+                                  </Dropdown.Item>
+                                  
+                              </Link>
+                              <Dropdown.Divider/>
+                              <Dropdown.Item>
+                                  Sign out
+                              </Dropdown.Item>
+                              
                       </Dropdown>
                       ): (
                           <Link to='/sign-in'>
