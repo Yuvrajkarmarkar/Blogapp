@@ -23,14 +23,14 @@ export const updateUser = async (req, res,next) => {
         if (req.body.username.includes(' ')) {
             return next(errorHandler(400, 'username cannot contain spaces'));
         }
-        if (req.body.username !== req, body.username.toLowerCase()) {
+        if (req.body.username !== req.body.username.toLowerCase()) {
             return next(errorHandler(400, 'username must be lowercase'));
         }
         if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
             return next(errorHandler(400, 'username must contain only alphanumeric characters'));
         }
         try {
-            const updateUser = await User.findByIdAndUpadate(req.params.userId, {
+            const updateUser = await User.findByIdAndUpdate(req.params.userId, {
                 $set: {
                     username: req.body.username,
                     email: req.body.email,
