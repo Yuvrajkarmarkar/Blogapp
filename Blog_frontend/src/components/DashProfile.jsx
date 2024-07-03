@@ -10,7 +10,7 @@ import {
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateSuccess, updateFailure, updateStart,deleteuserFailure,deleteuserStart,deleteuserSuccess } from '../redux/user/userSlice';
+import { updateSuccess, updateFailure, updateStart,deleteuserFailure,deleteuserStart,deleteuserSuccess,signoutSuccess } from '../redux/user/userSlice';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 export default function DashProfile() {
@@ -134,6 +134,21 @@ export default function DashProfile() {
     }
 
   }
+  const handleSignout = async () => {
+    try {
+      const res = await fetch(`/api/user/signout`, {
+        method:'POST',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess(data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   return (
@@ -180,7 +195,7 @@ export default function DashProfile() {
       </form>
       <div className=" text-red-500 flex justify-between mt-5">
         <span onClick={()=>setShowModal(true)} className='cursor-pointer'>Delete Accont</span>
-        <span className='cursor-pointer'>Sign out</span>
+        <span className='cursor-pointer' onClick={handleSignout}>Sign out</span>
       </div>
       {
         updateuserSuccess &&
