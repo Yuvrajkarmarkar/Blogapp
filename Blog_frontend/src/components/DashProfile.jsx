@@ -195,7 +195,7 @@ export default function DashProfile() {
         </Button>
         {
           currentUser.isAdmin && (
-            <Link to={'create-post'}>
+            <Link to={'/create-post'}>
 
             <Button type='button' gradientDuoTone='greenToBlue' className='w-full'>
               create a post
