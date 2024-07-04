@@ -1,13 +1,14 @@
-import Post from "../models/post.model";
+import Post from "../models/post.model.js";
+import { errorHandler } from "../utils/error.js";
 
 export const create = async (req, res, next) => {
     if (!req.user.isAdmin) {
-        return next(errorHandler(403, 'You are not allowed to access this'))
+        return next(errorHandler(403, 'You are not allowed to access this'));
     }
     if (!req.body.title || req.body.content) {
-        return next(errorHandler(400, 'Title and content are required'))
+        return next(errorHandler(400, 'Title and content are required'));
     }
-    const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g, '-');
+    const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g,'-');
     const newPost = new Post({
         ...req.body,
         slug,
