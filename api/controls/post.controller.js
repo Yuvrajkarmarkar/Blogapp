@@ -5,7 +5,7 @@ export const create = async (req, res, next) => {
     if (!req.user.isAdmin) {
         return next(errorHandler(403, 'You are not allowed to access this'));
     }
-    if (!req.body.title || req.body.content) {
+    if (!req.body.title || !req.body.content) {
         return next(errorHandler(400, 'Title and content are required'));
     }
     const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-zA-Z0-9-]/g,'-');
@@ -16,7 +16,7 @@ export const create = async (req, res, next) => {
     });
     try {
         const savedPost = await newPost.save();
-        res.status(201).json(savedPost);
+        res.status(200).json(savedPost);
     } catch (error) {
         next(error);
     }
