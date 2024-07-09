@@ -1,5 +1,6 @@
-import { Table } from 'flowbite-react';
+import { Button, Modal, Table } from 'flowbite-react';
 import React, { useEffect,useState } from 'react'
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +8,8 @@ export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const[postIdToDelete,setPostIdToDelete]=useState('');
   
 
   useEffect(() => {
@@ -29,6 +32,7 @@ export default function DashPosts() {
       fetchPosts();
     } 
   }, [currentUser._id]);
+
   const handleShowMore = async () => {
     const startIndex = userPosts.length;
     try {
@@ -46,12 +50,35 @@ export default function DashPosts() {
     }
   }  
 
+  const handlePostDelete = async () => {
+    setShowModal(false);
+    try {
+      const res = await fetch(`/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setUserPosts((prev) =>
+        prev.filter((post)=>post._id!==postIdToDelete)
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+ 
+
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-500 scrollbar-thumb-slate-800'>
     
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <>
-          <Table hoverable className='shadow-md'>
+          <Table hoverable className='shadow-md' >
             <Table.Head>
               <Table.HeadCell>
                 Date Updated
@@ -69,7 +96,7 @@ export default function DashPosts() {
                 Delete
               </Table.HeadCell>
               <Table.HeadCell>
-               <span>Edit</span>
+                <span>Edit</span>
               </Table.HeadCell>
             </Table.Head>{
               userPosts.map((post) => (
@@ -83,7 +110,7 @@ export default function DashPosts() {
                         <img
                           src={post.image}
                           alt={post.title}
-                        className='w-20 h-10 object-cover bg-slate-600'/>
+                          className='w-20 h-10 object-cover bg-slate-600' />
                       </Link>
                     </Table.Cell>
                     <Table.Cell>
@@ -95,7 +122,13 @@ export default function DashPosts() {
                       {post.category}
                     </Table.Cell>
                     <Table.Cell>
-                      <span className='font-medium text-red-800 hover:text-red-600'>Delete</span>
+                      <span className='font-medium text-red-800 hover:text-red-600 hover:cursor-pointer'
+                        onClick={() => {
+                          setShowModal(true);
+                          setPostIdToDelete(post._id);
+                        }}>
+                        Delete
+                      </span>
                     </Table.Cell>
                     <Table.Cell>
                       <Link className='text-green-700 hover:text-green-400' to={`/update-post/${post._id}`}>
@@ -117,10 +150,25 @@ export default function DashPosts() {
             
           }
         </>
-      ): (
+      ) : (
         <p>you have no posts</p>
       )}
+      <Modal show={showModal} onClose={() => setShowModal(false)} popupsixe='md' >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className='h-14 w-14 mb-4 mx-auto'/>
 
+            <h3 className='mb-5 text-lg text-red-600'>Are you sure you want to delete your post? This action cannot be undone.</h3>
+            <div className="flex justify-center gap-4">
+              <Button gradientDuoTone='pinkToOrange' onClick={handlePostDelete}color='failure'>Yes</Button>
+              <Button gradientDuoTone='greenToBlue' onClick={() => setShowModal(false)}>No</Button>
+            </div>
+
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
-  )
+  );
+
 }
