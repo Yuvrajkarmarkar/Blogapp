@@ -72,7 +72,23 @@ export default function DashUsers() {
 //     }
     //   }
     const handleUserDelete = async (req, res) => {
-        
+        try {
+            const res = await fetch(`/api/user/delete/${UserIdToDelete}`, {
+                method: 'DELETE',
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setUsers((prev) =>
+                    prev.filter((user) => user._id !== UserIdToDelete)
+                );
+                setShowModal(false);
+            } else {
+                console.log(data.message);
+            }
+    
+        } catch (error) {
+            console.log(error);
+        }
     }
 
  
