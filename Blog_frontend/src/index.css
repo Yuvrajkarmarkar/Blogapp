@@ -9,3 +9,28 @@ body{
 .ql-editor{
     font-size: 1.05rem;
 }
+
+.post-content p{
+    margin-bottom: 5px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.post-content h1{
+    font-size: 144px;
+    font-weight: 400;
+    margin: 6px;
+}
+.post-content h4{
+    font-size: 32px;
+    font-weight: 400;
+    margin: 10px;
+}
+
+.post-content a{
+    color: blue;
+}
+.post-content a:hover{
+    color: red;
+}
+
+
