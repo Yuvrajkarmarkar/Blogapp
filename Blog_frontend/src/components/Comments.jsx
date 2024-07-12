@@ -1,13 +1,17 @@
 import { Alert, Button, Textarea } from 'flowbite-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Comm from './comm'
 
 
 export default function Comments({ postId }) {
     const { currentUser } = useSelector(state => state.user);
     const [comment, setComment] = useState('');
     const [commentError, setCommentError] = useState(null);
+    const [comments, setComments] = useState([]);
+
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,11 +33,27 @@ export default function Comments({ postId }) {
             if (res.ok) {
                 setComment('');
                 setCommentError(null);
+                setComments([data, ...comments]);
             }
         } catch (error) {
             setCommentError(error.message); 
         }
     };
+
+    useEffect(() => {
+        const getComments = async () => {
+            try {
+                const res = await fetch(`/api/comment/getpostComments/${postId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setComments(data);
+                }
+            } catch (error) {
+                console.log(error.message)
+            }
+        };
+        getComments();
+    },[postId])
    
 
 
@@ -76,6 +96,22 @@ export default function Comments({ postId }) {
               
               </form>
           )}
+          {
+              comments.length === 0 ? (
+              <p>No Comments</p>
+              ) : (
+                      <>
+                      <div className="">
+                          <p>{comments.length }  Comments</p>
+                          </div>
+                        
+                          {comments.map((comment) => (
+                              <Comm key={comment._id} comment={comment} />
+                          ))}
+                      </>
+                      
+              )
+          }
     </div>
   )
 }
