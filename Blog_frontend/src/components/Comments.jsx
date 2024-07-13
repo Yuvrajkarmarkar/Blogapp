@@ -61,28 +61,36 @@ export default function Comments({ postId }) {
             if (!currentUser) {
                 navigate('/sign-in')
                 return;
-            } 
+            }
             const res = await fetch(`/api/comment/likeComment/${commentId}`,
-            {
-                method: 'PUT',
+                {
+                    method: 'PUT',
                 });
             if (res.ok) {
                 const data = await res.json();
                 setComments(
-                    comments.map((comment) => 
+                    comments.map((comment) =>
                         comment._id === commentId ? {
                             ...comment,
                             likes: data.likes,
                             numberOfLikes: data.likes.length,
 
-                        }:comment
+                        } : comment
                     
-                ));
+                    ));
             }
         } catch (error) {
             console.log(error.message)
         }
-    }
+    };
+
+    const handleEdit = async (comment, editedContent) => {
+        setComments(
+            comments.map((c) =>
+                c._id === comment._id ? { ...c, content: editedContent } : c
+            )
+        );
+    };
    
 
 
@@ -135,7 +143,7 @@ export default function Comments({ postId }) {
                           </div>
                         
                           {comments.map((comment) => (
-                              <Comm key={comment._id} comment={comment} onLike={handleLike} />
+                              <Comm key={comment._id} comment={comment} onLike={handleLike} onEdit={handleEdit } />
                           ))}
                       </>
                       
