@@ -4,7 +4,7 @@ import {FaThumbsUp} from 'react-icons/fa'
 import { useSelector } from 'react-redux';
 import { Button, Textarea } from 'flowbite-react';
 
-export default function comm({ comment,onLike,onEdit }) {
+export default function comm({ comment,onLike,onEdit,onDelete }) {
     const [user, setUser] = useState({});
     const { currentUser } = useSelector(state => state.user);
     const [isEditing, setIsEditing] = useState(false);
@@ -36,11 +36,11 @@ export default function comm({ comment,onLike,onEdit }) {
         setIsEditing(false);
         try {
             const res = await fetch(`/api/comment/editComment/${comment._id}`, {
-                method:'PUT',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({content:editedContent}),
+                body: JSON.stringify({ content: editedContent }),
             });
             const data = await res.json();
             if (res.ok) {
@@ -50,7 +50,9 @@ export default function comm({ comment,onLike,onEdit }) {
         } catch (error) {
             console.log(error.message);
         }
-     }
+    };
+
+    
 
     
   return (
@@ -103,8 +105,14 @@ export default function comm({ comment,onLike,onEdit }) {
                       }
                   </p>
                   {
-                      currentUser && (currentUser._id === comment.userId ||currentUser.isAdmin) && (
-                          <button className='hover:text-blue-600 hover:underline' onClick={handleEdit} >Edit</button>
+                                      currentUser && (currentUser._id === comment.userId || currentUser.isAdmin) && (
+                                          <>
+                                          
+                                          <button className='hover:text-blue-600 hover:underline' onClick={handleEdit} >Edit</button>
+                                              <button className='hover:text-red-600 hover:underline' onClick={
+                                                  ()=> onDelete(comment._id)
+                                          } >Delete</button>
+                                          </>
                       )
                   }
               </div>
