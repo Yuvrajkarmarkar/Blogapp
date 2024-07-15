@@ -2,6 +2,7 @@ import { Button, Spinner } from 'flowbite-react';
 import React, { useEffect,useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import Comments from '../components/Comments';
+import PostCard from '../components/PostCard';
 
 
 export default function PostPage() {
@@ -9,6 +10,7 @@ export default function PostPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [post, setPost] = useState(null);
+    const [recentPosts, setRecentPosts] = useState(null);
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -32,7 +34,22 @@ export default function PostPage() {
             }
         }
         fetchPost();
-    },[postSlug]);
+    }, [postSlug]);
+    
+    useEffect(() => {
+        try {
+            const fetchRecentPosts = async () => {
+                const res = await fetch(`/api/post/getpost?limit=3`);
+                const data = await res.json();
+                if (res.ok) {
+                    setRecentPosts(data.posts);
+                }
+            }
+            fetchRecentPosts();
+        } catch (error) {
+            console.error(error.message);
+        }
+    }, []);
 
     if (loading) {
         return (
@@ -64,6 +81,19 @@ export default function PostPage() {
           </div>
           <div className='p-3 max-w-2xl mx-auto w-full post-content' dangerouslySetInnerHTML={{ __html: post && post.content }}></div>
           <Comments postId={post._id} />
+
+          <div className="flex flex-col justify-center items-center mb-5">
+              <h1 className='text-xl mt-5'>Recent article</h1>
+              <div className="flex flex-wrap gap-5 mt-5">
+                  {
+                      recentPosts && recentPosts.map((post) => 
+                          <PostCard key={post._id} post={post}></PostCard>
+                      )
+
+                      
+                  }
+                </div>
+          </div>
           
     </main>
   )
