@@ -5,7 +5,7 @@ import About from './pages/about'
 import SignIn from './pages/signinpage'
 import SignUp from './pages/signuppage'
 import Dashboard from './pages/Dashboard'
-import Projects from './pages/projects'
+
 import Header from './components/header'
 import Footer from './components/Footer'
 import PrivateRoute from './components/PrivateRoute'
@@ -34,7 +34,7 @@ function Main() {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>
-        <Route path="/projects" element={<Projects />} />
+        
         <Route path="/post/:postSlug" element={<PostPage />} />
       </Routes>
     <Footer/>
